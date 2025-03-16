@@ -1,48 +1,38 @@
-import { type Inquiry, type InsertInquiry, type ChatMessage, type InsertChatMessage } from "@shared/schema";
+import { users, type User, type InsertUser } from "@shared/schema";
+
+// modify the interface with any CRUD methods
+// you might need
 
 export interface IStorage {
-  createInquiry(inquiry: InsertInquiry): Promise<Inquiry>;
-  createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
-  getChatMessages(): Promise<ChatMessage[]>;
+  getUser(id: number): Promise<User | undefined>;
+  getUserByUsername(username: string): Promise<User | undefined>;
+  createUser(user: InsertUser): Promise<User>;
 }
 
 export class MemStorage implements IStorage {
-  private inquiries: Map<number, Inquiry>;
-  private chatMessages: Map<number, ChatMessage>;
-  private currentInquiryId: number;
-  private currentChatMessageId: number;
+  private users: Map<number, User>;
+  currentId: number;
 
   constructor() {
-    this.inquiries = new Map();
-    this.chatMessages = new Map();
-    this.currentInquiryId = 1;
-    this.currentChatMessageId = 1;
+    this.users = new Map();
+    this.currentId = 1;
   }
 
-  async createInquiry(insertInquiry: InsertInquiry): Promise<Inquiry> {
-    const id = this.currentInquiryId++;
-    const inquiry: Inquiry = {
-      ...insertInquiry,
-      id,
-      createdAt: new Date()
-    };
-    this.inquiries.set(id, inquiry);
-    return inquiry;
+  async getUser(id: number): Promise<User | undefined> {
+    return this.users.get(id);
   }
 
-  async createChatMessage(insertMessage: InsertChatMessage): Promise<ChatMessage> {
-    const id = this.currentChatMessageId++;
-    const message: ChatMessage = {
-      ...insertMessage,
-      id,
-      createdAt: new Date()
-    };
-    this.chatMessages.set(id, message);
-    return message;
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(
+      (user) => user.username === username,
+    );
   }
 
-  async getChatMessages(): Promise<ChatMessage[]> {
-    return Array.from(this.chatMessages.values());
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const id = this.currentId++;
+    const user: User = { ...insertUser, id };
+    this.users.set(id, user);
+    return user;
   }
 }
 
