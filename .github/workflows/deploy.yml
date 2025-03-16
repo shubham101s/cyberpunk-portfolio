@@ -27,6 +27,8 @@ jobs:
       - name: Build website
         working-directory: ./client
         run: npm run build
+        env:
+          VITE_PUBLIC_URL: '/cyberpunk-portfolio'
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
