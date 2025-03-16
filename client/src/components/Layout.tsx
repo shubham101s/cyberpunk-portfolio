@@ -30,6 +30,7 @@ const NavItems = () => {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
+      <div className="animated-background" />
       <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="text-xl font-bold hover:text-primary transition-colors">
@@ -57,11 +58,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <main className="pt-16">
+      <main className="pt-16 relative z-10">
         {children}
       </main>
 
-      <footer className="bg-background border-t border-border mt-20 py-8">
+      <footer className="bg-background/80 backdrop-blur border-t border-border mt-20 py-8 relative z-10">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           © {new Date().getFullYear()} Shubham Chavda. All rights reserved.
         </div>
